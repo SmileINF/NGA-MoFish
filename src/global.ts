@@ -11,6 +11,10 @@ export default class Global {
         return iconvlite.decode(iconvlite.encode(src, 'gbk'), 'utf-8');
     }
 
+    static getMyFavorName(): string{
+        return 'favor';
+    }
+
     static getWebViewContextPath(webview: Webview): string {
         return webview.asWebviewUri(Uri.file(this.context!.extensionPath)).toString();
     }

@@ -27,12 +27,18 @@ export class NGA {
 
     static async getTopicListByNode(node: Node): Promise<Topic[]> {
         let maxnum = Global.getPostNum();
-        console.log(`https://bbs.nga.cn/thread.php?fid=${node.name}&lite=js`);
+        let url = `https://bbs.nga.cn/thread.php?fid=${node.name}&lite=js`;
+        
+        if(node.name == Global.getMyFavorName())
+        {   //添加自己收藏节点
+            url = `https://bbs.nga.cn/thread.php?favor=1&lite=js`;
+        }
+        console.log(url);
         const list: Topic[] = [];
         let tids: number[] = [];
         let nownum = 0;
         for (let i=1; i <=10; i++) {
-            const res = await http.get(`https://bbs.nga.cn/thread.php?fid=${node.name}&lite=js&page=${i}`, { responseType: 'arraybuffer' });
+            const res = await http.get( url + `&page=${i}`, { responseType: 'arraybuffer' });
             let j = res.data.replace('window.script_muti_get_var_store=', '');
             // console.log(j)
             try {
@@ -48,7 +54,7 @@ export class NGA {
                     const topic = new Topic();
                     const t = js.__T[val];
                     // console.log(t)
-                    if (t.fid != node.name) {
+                    if (node.name != Global.getMyFavorName() && t.fid != node.name) {
                         continue;
                     }
                     let sub = fid2name.has('' + t.fid) ? fid2name.get('' + t.fid) : '';
