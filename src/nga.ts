@@ -158,6 +158,11 @@ export class NGA {
         const _getTopicReplies = async (link: string, page: number): Promise<TopicReply[]> => {
             const replies: TopicReply[] = [];
             let range = 5;
+            topic.totalPage = Math.ceil(topic.replyCount / (range * js.__R__ROWS_PAGE))
+            if(page > topic.totalPage){
+                page = topic.totalPage;
+                topic.page = topic.totalPage;
+            }
             for (let i = (page-1)*range +1; i <= page*range; i++) {
                 topic.needTurn = true;
                 console.log(topicLink + '&page=' + i);
@@ -365,6 +370,8 @@ export class TopicDetail {
     public onlyAuthor: boolean = false;
     // 传递页码
     public page: number = 0;
+    // 总页数
+    public totalPage: number = 0;
     // 是否需要翻页
     public needTurn: boolean = false;
 }

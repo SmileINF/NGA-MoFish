@@ -107,13 +107,17 @@
       {{/each}}
     </div>
     
-    {{if !topic.onlyAuthor && topic.needTurn}}
+    {{if !topic.onlyAuthor}}
       {{if topic.page > 1}}
       <a class="pageUp" href="javascript:;" onclick="vsPostMessage('pageTurning', {page: <%= topic.page-1 %>});" title="上一页">上一页</a>
       <a class="pageDown" href="javascript:;" onclick="vsPostMessage('pageTurning', {page: <%= topic.page+1 %>});" title="下一页">下一页</a>
       {{else}}
       <a class="pageDown" href="javascript:;" onclick="vsPostMessage('pageTurning', {page: <%= topic.page+1 %>});" title="下一页">下一页</a>
       {{/if}}
+
+      <span>共 <b>{{ topic.totalPage }}</b> 页</span>
+      <span> 到第 <input type = number id = "pageInputId" class = "pageInput" value = '{{ topic.page }}'/> 页</span>
+      <span class = "changePage" href="javascript:;" onclick="onSure();"> 确定</span>
     {{/if}}
 
   </div>
@@ -121,6 +125,10 @@
   <script src="{{ contextPath }}/html/lib/js-yaml.min.js"></script>
   <script>
     var __topic = topic;
+    function onSure(){
+      var inputPage = document.getElementById('pageInputId').value;
+      vsPostMessage('pageTurning', {page : inputPage});
+    }
   </script>
   <script src="{{ contextPath }}/html/topic-spic.js"></script>
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
